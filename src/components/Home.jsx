@@ -7,10 +7,10 @@ const Home = () => {
     return (
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
             <h1>Trello Clone</h1>
-            <button onClick={() => navigate().push('/register')} style={{ display: 'block', margin: '10px auto' }}>
+            <button onClick={() => navigate('/register')} style={{ display: 'block', margin: '10px auto' }}>
                 Регистрация
             </button>
-            <button onClick={() => navigate().push('/login')} style={{ display: 'block', margin: '10px auto' }}>
+            <button onClick={() => navigate('/login')} style={{ display: 'block', margin: '10px auto' }}>
                 Войти
             </button>
         </div>

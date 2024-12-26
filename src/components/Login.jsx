@@ -9,7 +9,7 @@ const Login = () => {
             <h1>Авторизация</h1>
             <input type="text" placeholder="Логин" style={{ display: 'block', margin: '10px auto' }} />
             <input type="password" placeholder="Пароль" style={{ display: 'block', margin: '10px auto' }} />
-            <button onClick={() => navigate().push('/')} style={{ display: 'block', margin: '10px auto' }}>
+            <button onClick={() => navigate('/')} style={{ display: 'block', margin: '10px auto' }}>
                 Вход
             </button>
         </div>

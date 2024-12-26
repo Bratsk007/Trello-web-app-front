@@ -12,9 +12,9 @@ function App() {
     return (
         <Router>
             <div className="App">
-                <header className="App-header">
-                    <h1>Мой аналог Trello</h1>
-                </header>
+                {/*<header className="App-header">*/}
+                {/*    /!*<h4>Мой аналог Trello</h4>*!/*/}
+                {/*</header>*/}
                 <main>
                     <Routes>
                         {/*<Route path="/boards/:boardId" element={<Board />} />*/}

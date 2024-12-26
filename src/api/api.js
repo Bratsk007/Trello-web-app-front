@@ -2,6 +2,18 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/api'; // URL бэкенда
 
+// Регистрация пользователя
+export const register = async (userData) => {
+    const response = await axios.post(`${API_URL}/auth/register`, userData);
+    return response.data;
+}
+
+// Авторизация пользователя
+export const login = async (userData) => {
+    const response = await axios.post(`${API_URL}/auth/login`, userData);
+    return response.data;
+}
+
 // Сущность: ДОСКА
 // Получение всех досок по ID пользователя
 export const getBoards = async (userId) => {

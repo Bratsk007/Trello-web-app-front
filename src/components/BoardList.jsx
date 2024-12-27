@@ -7,6 +7,7 @@ const BoardList = () => {
     const [boards, setBoards] = useState([]);
     const {userId} = useContext(AuthContext);
     const navigate = useNavigate();
+    const { setBoardId } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchBoards = async () => {
@@ -24,7 +25,9 @@ const BoardList = () => {
 
     // Обработчик клика по кнопке доски
     const handleBoardClick = (boardId) => {
-        navigate(`/boards/${boardId}`); // Переход на страницу доски
+        setBoardId(boardId); // сохранение ID доски
+        navigate(`/boards/${boardId}`); // Переход на страницу доски с boardId
+        console.log("Going to board with ID: " + boardId);
     };
 
     return (

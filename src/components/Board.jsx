@@ -1,15 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getBoardById, deleteListById, createList } from '../api/api';
 import List from './List';
+import { AuthContext } from '../AuthContext';
 
-const Board = ({ boardId }) => {
-    const [board, setBoard] = useState(null);
+const Board = () => {
+    const { boardId } = useContext(AuthContext);
+    const [board, setBoard] = useState({
+        title: 'Доска',
+        description: 'Описание доски',
+        catalogList: [], // Инициализация catalogList
+    });
     const [newListTitle, setNewListTitle] = useState('');
 
     useEffect(() => {
         const fetchBoard = async () => {
-            const data = await getBoardById(boardId);
-            setBoard(data);
+            try {
+                const data = await getBoardById(boardId);
+                console.log('Данные с бэкенда:', data);
+                setBoard({
+                    title: 'Доска',
+                    description: 'Описание доски',
+                    catalogList: data.catalogList.map((list) => ({
+                        ...list,
+                        cardDtoList: list.cardDtoList || [], // Инициализация cardDtoList
+                    })),
+                });
+            } catch (error) {
+                console.error('Ошибка при загрузке доски:', error);
+            }
         };
         fetchBoard();
     }, [boardId]);
@@ -17,35 +35,43 @@ const Board = ({ boardId }) => {
     const handleAddList = async () => {
         if (newListTitle.trim()) {
             const listData = { title: newListTitle };
-            const newList = await createList(boardId, listData);
-            setBoard((prevBoard) => ({
-                ...prevBoard,
-                lists: [...prevBoard.lists, newList],
-            }));
-            setNewListTitle('');
+            try {
+                const newList = await createList(boardId, listData);
+                setBoard((prevBoard) => ({
+                    ...prevBoard,
+                    catalogList: [...prevBoard.catalogList, { ...newList, cardDtoList: [] }],
+                }));
+                setNewListTitle('');
+            } catch (error) {
+                console.error('Ошибка при создании списка:', error);
+            }
         }
     };
 
     const handleDeleteList = async (listId) => {
-        await deleteListById(listId);
-        setBoard((prevBoard) => ({
-            ...prevBoard,
-            lists: prevBoard.lists.filter((list) => list.id !== listId),
-        }));
+        try {
+            await deleteListById(listId);
+            setBoard((prevBoard) => ({
+                ...prevBoard,
+                catalogList: prevBoard.catalogList.filter((list) => list.id !== listId),
+            }));
+        } catch (error) {
+            console.error('Ошибка при удалении списка:', error);
+        }
     };
 
     const handleAddCard = (listId, newCard) => {
         setBoard((prevBoard) => ({
             ...prevBoard,
-            lists: prevBoard.lists.map((list) =>
+            catalogList: prevBoard.catalogList.map((list) =>
                 list.id === listId
-                    ? { ...list, cards: [...list.cards, newCard] }
+                    ? { ...list, cardDtoList: [...list.cardDtoList, newCard] }
                     : list
             ),
         }));
     };
 
-    if (!board) {
+    if (!board || !board.catalogList) {
         return <p>Загрузка...</p>;
     }
 
@@ -63,7 +89,7 @@ const Board = ({ boardId }) => {
                 <button onClick={handleAddList}>Добавить список</button>
             </div>
             <div className="lists">
-                {board.lists.map((list) => (
+                {board.catalogList.map((list) => (
                     <List
                         key={list.id}
                         list={list}

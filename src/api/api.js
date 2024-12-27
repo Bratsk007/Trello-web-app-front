@@ -29,7 +29,7 @@ export const createBoard = async (userId, boardData) => {
 
 // Получение доски по ее ID
 export const getBoardById = async (boardId) => {
-    const response = await axios.get(`${API_URL}/boards/${boardId}/lists`);
+    const response = await axios.get(`${API_URL}/boards/lists/${boardId}`);
     return response.data;
 };
 

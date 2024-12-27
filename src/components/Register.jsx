@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {getBoards, register} from "../api/api";
+import {register} from "../api/api";
 import { AuthContext } from '../AuthContext';
 
 const Register = () => {
